@@ -109,10 +109,15 @@
       // 文字をクリックしたときの処理
       charElement.addEventListener('click', () => {
         selectedSequence += char; // 選択された文字を記録
-        if (selectedSequence === 'hlpe') {
+        updateInputCount();
+        console.log(`選択された文字列:${selectedSequence}`);
+        
+        if (selectedSequence === 'help') {
           window.location.href = 'index.html'; // 正しい順序で選択されたらリンク
         } else if (!'hlpe'.startsWith(selectedSequence)) {
           selectedSequence = ''; // 順序が間違っていたらリセット
+          InputCount.textContent = '入力文字数: 0';
+          
         }
       });
 
