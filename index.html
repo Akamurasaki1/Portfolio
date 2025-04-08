@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>画像分割とスライドパズル</title>
+  <style>
+    #output {
+      display: grid;
+      gap: 2px;
+      position: relative;
+    }
+    #output div {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #ddd;
+      cursor: pointer;
+    }
+    #output img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    #output .empty {
+      background-color: #fff;
+      cursor: default;
+    }
+    #originalImage {
+      margin-top: 20px;
+      display: none;
+      text-align: center;
+    }
+    #originalImage img {
+      max-width: 200px;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>画像分割とスライドパズル</h1>
+  <input type="file" id="imageInput" accept="image/*">
+  <label for="rows">縦分割数:</label>
+  <input type="number" id="rows" min="2" value="3">
+  <label for="cols">横分割数:</label>
+  <input type="number" id="cols" min="2" value="3">
+  <button id="processButton">画像を処理</button>
+  <button id="showOriginalButton">元の画像を表示</button>
+  <button id="reshuffleButton">このパズルは解くことができません。もう一回問題を出せよ</button>  <!--数学的に解くことができないパズルになった時に自動で押されるようにする-->
+  <div id="output"></div>
+  <div id="originalImage">
+    <h2>元の画像</h2>
+    <img id="originalImageElement" src="" alt="元の画像">
+  </div>
+
+  <script>
+    document.querySelectorAll('#processButton,#reshuffleButton').forEach(button => {
+      button.addEventListener('click', () => {
+        const fileInput = document.getElementById('imageInput');
+        const rows = parseInt(document.getElementById('rows').value, 10);
+        const cols = parseInt(document.getElementById('cols').value, 10);
+        const output = document.getElementById('output');
+        const originalImageElement = document.getElementById('originalImageElement');
+        const originalImageContainer = document.getElementById('originalImage');
+
+        if (!fileInput.files[0]) {
+          alert('画像をアップロードしてください');
+          return;
+        }
+
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+          const img = new Image();
+          img.src = event.target.result;
+
+          // 元の画像を設定
+          originalImageElement.src = event.target.result;
+          originalImageContainer.style.display = 'none';
+
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const pieceWidth = img.width / cols;
+            const pieceHeight = img.height / rows;
+
+            const pieces = [];
+            canvas.width = pieceWidth;
+            canvas.height = pieceHeight;
+
+            for (let row = 0; row < rows; row++) {
+              for (let col = 0; col < cols; col++) {
+                ctx.clearRect(0, 0, pieceWidth, pieceHeight);
+                ctx.drawImage(
+                  img,
+                  col * pieceWidth,
+                  row * pieceHeight,
+                  pieceWidth,
+                  pieceHeight,
+                  0,
+                  0,
+                  pieceWidth,
+                  pieceHeight
+                );
+                pieces.push({ src: canvas.toDataURL(), row, col });
+              }
+            }
+
+            // 空きマスを追加
+            pieces.pop(); // 最後のピースを空きマスにする
+            pieces.push({ src: null, row: rows - 1, col: cols - 1 });
+
+            // シャッフル
+            for (let i = pieces.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [pieces[i], pieces[j]] = [pieces[j], pieces[i]];
+            }
+
+            // 出力
+            output.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+            output.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            output.innerHTML = '';
+
+            pieces.forEach((piece, index) => {
+              const pieceElement = document.createElement('div');
+              pieceElement.dataset.index = index;
+              pieceElement.dataset.row = piece.row;
+              pieceElement.dataset.col = piece.col;
+
+              if (piece.src) {
+                const imgElement = document.createElement('img');
+                imgElement.src = piece.src;
+                pieceElement.appendChild(imgElement);
+              } else {
+                pieceElement.classList.add('empty');
+              }
+
+              output.appendChild(pieceElement);
+            });
+
+            // スライドパズルのロジック
+            output.onclick = (e) => {
+              const target = e.target.closest('div');
+              if (!target || target.classList.contains('empty')) return;
+
+              const emptyPiece = document.querySelector('.empty');
+              const emptyIndex = Array.from(output.children).indexOf(emptyPiece);
+              const targetIndex = Array.from(output.children).indexOf(target);
+
+              const emptyRow = Math.floor(emptyIndex / cols);
+              const emptyCol = emptyIndex % cols;
+              const targetRow = Math.floor(targetIndex / cols);
+              const targetCol = targetIndex % cols;
+
+              // 隣接している場合のみ入れ替え
+              if (
+                (Math.abs(emptyRow - targetRow) === 1 && emptyCol === targetCol) ||
+                (Math.abs(emptyCol - targetCol) === 1 && emptyRow === targetRow)
+              ) {
+                // 入れ替え
+                emptyPiece.classList.remove('empty');
+                emptyPiece.innerHTML = target.innerHTML;
+                target.classList.add('empty');
+                target.innerHTML = '';
+
+                // 空白マスの参照を更新
+                emptyPiece.dataset.row = targetRow;
+                emptyPiece.dataset.col = targetCol;
+                target.dataset.row = emptyRow;
+                target.dataset.col = emptyCol;
+              }
+            };
+          };
+        };
+
+        reader.readAsDataURL(file);
+      });
+    });
+
+    document.getElementById('showOriginalButton').addEventListener('click', () => {
+      const originalImageContainer = document.getElementById('originalImage');
+      if (originalImageContainer.style.display === 'none') {
+        originalImageContainer.style.display = 'block';
+      } else {
+        originalImageContainer.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
