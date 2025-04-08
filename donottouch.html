@@ -61,7 +61,7 @@
   });
 
   // キーボード入力を監視
-  document.addEventListener('keydown', (event) => {
+  document.addEventListener('keydown',(event) => {
     if (isTracking) {
       const currentCount = parseInt(inputCount.textContent.replace('入力文字数: ', ''), 10);
       inputCount.textContent = `入力文字数: ${currentCount + 1}`;
@@ -73,7 +73,7 @@
       }
 
       // 入力が長すぎた場合はリセット
-      if (typedText.length > 5) {
+      if (currentCount > 5) {
         typedText = '';
         inputCount.textContent = '入力文字数: 0';
       
