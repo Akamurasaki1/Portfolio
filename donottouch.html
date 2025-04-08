@@ -16,32 +16,69 @@
     font-size: 2rem; /* テキストサイズを大きく */
     font-family: Arial, sans-serif; /* フォントを設定 */
   }
+  #inputTrackerContainer {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  #inputCount {
+    font-size: 1.2rem;
+    color: White;
+    margin-bottom: 10px;
+  }
+
+  #clickableText {
+    font-size: 2rem;
+    color: red;
+    cursor: pointer;
+  }
+
+  #clickableText.active {
+    color: blue; /* クリック後に青く変わる */
+  }
 </style>
 </head>
 <body>
-  <script>
-    // "help" と入力すると index.html にリンク
-    document.addEventListener('keydown', (event) => {
-      const input = event.key;
-      const helpText = 'help';
-      let typedText = '';
-  
-      // 入力を記録
-      typedText += input;
-  
-      // 入力が "help" と一致したらリンク
+  <div id="inputTrackerContainer">
+  <p id="inputCount">入力文字数: 0</p>
+  <div id="clickableText">XXXXXXX</div>
+</div>
+<script>
+  const clickableText = document.getElementById('clickableText');
+  const inputCount = document.getElementById('inputCount');
+  let isTracking = false; // 入力監視の状態を管理
+  let typedText = ''; // 入力された文字を記録
+  const helpText = 'help'; // リンクするトリガー文字列
+
+  // クリックイベントの設定
+  clickableText.addEventListener('click', () => {
+    if (!isTracking) {
+      clickableText.classList.add('active'); // 文字色を青に変更
+      isTracking = true; // 入力監視を開始
+      inputCount.textContent = '入力文字数: 0'; // 初期化
+      typedText = ''; // 入力履歴をリセット
+    }
+  });
+
+  // キーボード入力を監視
+  document.addEventListener('keydown', (event) => {
+    if (isTracking) {
+      const currentCount = parseInt(inputCount.textContent.replace('入力文字数: ', ''), 10);
+      inputCount.textContent = `入力文字数: ${currentCount + 1}`;
+      typedText += event.key; // 入力されたキーを記録
+
+      // 「たすけて」と一致したらリンク
       if (typedText.includes(helpText)) {
         window.location.href = 'index.html';
       }
-  
+
       // 入力が長すぎた場合はリセット
       if (typedText.length > helpText.length) {
         typedText = typedText.slice(-helpText.length);
       }
-    });
-  </script>
-  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-  
+    }
+  });
+</script>
   <a href="about.html">救い</a>
 </body>
 </html>
