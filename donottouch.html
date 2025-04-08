@@ -46,6 +46,7 @@
 <script>
   const clickableText = document.getElementById('clickableText');
   const inputCount = document.getElementById('inputCount');
+  const InputCount = document.getElementById('InputCount');
   let isTracking = false; // 入力監視の状態を管理
   let typedText = ''; // 入力された文字を記録
   const helpText = 'help'; // リンクするトリガー文字列
@@ -108,6 +109,8 @@
 
       // 文字をクリックしたときの処理
       charElement.addEventListener('click', () => {
+        const CurrentCount = parseInt(InputCount.textContent.replace('入力文字数: ', ''), 10);
+        InputCount.textContent = `入力文字数: ${CurrentCount + 1}`;
         selectedSequence += char; // 選択された文字を記録
         updateInputCount();
         console.log(`選択された文字列:${selectedSequence}`);
