@@ -19,7 +19,29 @@
 </style>
 </head>
 <body>
+  <script>
+    // "help" と入力すると index.html にリンク
+    document.addEventListener('keydown', (event) => {
+      const input = event.key;
+      const helpText = 'help';
+      let typedText = '';
+  
+      // 入力を記録
+      typedText += input;
+  
+      // 入力が "help" と一致したらリンク
+      if (typedText.includes(helpText)) {
+        window.location.href = 'index.html';
+      }
+  
+      // 入力が長すぎた場合はリセット
+      if (typedText.length > helpText.length) {
+        typedText = typedText.slice(-helpText.length);
+      }
+    });
+  </script>
   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-  <a href="about.html">Aboutページへ</a>
+  
+  <a href="about.html">救い</a>
 </body>
 </html>
