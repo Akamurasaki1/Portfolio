@@ -54,7 +54,7 @@
   <div id="output"></div>
   <div id="lastPieceContainer" style="display: none; text-align: center; margin-top: 20px;">
     <h2>最後のピース</h2>
-    <img id="lastPiece" src="" alt="最後のピース">
+    <img id="lastPieceImage" src="" alt="最後のピース">
   </div>
   <div id="originalImage">
     <h2>元の画像</h2>
@@ -69,6 +69,7 @@
   </nav>
   <script>
     // 分割･シャッフルして問題を出す
+    let lastPiece = null;
     document.querySelectorAll('#processButton,#reshuffleButton').forEach(button => {
       button.addEventListener('click', () => {
         const fileInput = document.getElementById('imageInput');
@@ -122,7 +123,7 @@
               }
             }
 
-            // 空きマスを追加
+            // 最後のピースを保存して空きマスを追加
             lastPiece=pieces.pop(); // 最後のピースを空きマスにする
             pieces.push({ src: null, row: rows - 1, col: cols - 1 });
 
@@ -205,11 +206,14 @@
 
     // 最後のピースを表示
     document.getElementById('showLastButton').addEventListener('click', () => {
-      const LastPieceContainer = document.getElementById('lastPiece');
-      if (LastPieceContainer.style.display === 'none') {
-        LastPieceContainer.style.display = 'block';
+      const lastPieceContainer = document.getElementById('lastPieceContainer');
+      const lastPieceImage = document.getElementById('lastPieceImage');
+      
+      if (lastPiece){
+        lastPieceImage.src=lastPiece.src;
+        lastPieceContainer.style.display = lastPieceContainer.style.display ==='none' ? 'block' : 'none';
       } else {
-        LastPieceContainer.style.display = 'none';
+        alert('最後のピースが未設定です。画像を処理してください。');
       }
     });
     
