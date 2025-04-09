@@ -52,6 +52,8 @@
   <button id="reshuffleButton">混ぜ直す</button>  <!--数学的に解くことができないパズルになった時に自動で押されるようにする-->
   <button id="warukutiButton">このパズルは解くことができません。もう一回問題を出せよ</button>
   <div id="output"></div>
+  <button id="completeButton">最後のピースをはめて完成</button>
+  <div id="resultMessage" style="text-align: center; margin-top: 20px; font-size: 1.5rem;"></div>
   <div id="lastPieceContainer" style="display: none; text-align: center; margin-top: 20px;">
     <h3>最後のピース</h3>
     <img id="lastPieceImage" src="" alt="最後のピース">
@@ -226,6 +228,47 @@
         originalImageContainer.style.display = 'none';
       }
     });
+
+    document.getElementById('completeButton').addEventListener('click', () => {
+    const output = document.getElementById('output');
+    const rows = parseInt(document.getElementById('rows').value, 10);
+    const cols = parseInt(document.getElementById('cols').value, 10);
+    const resultMessage = document.getElementById('resultMessage');
+  
+    // 最後のピースを右下にはめる
+    const emptyPiece = document.querySelector('.empty');
+    if (lastPiece) {
+      emptyPiece.classList.remove('empty');
+      emptyPiece.innerHTML = `<img src="${lastPiece.src}" style="width: 100%; height: 100%; object-fit: cover;">`;
+      emptyPiece.dataset.row = rows - 1;
+      emptyPiece.dataset.col = cols - 1;
+    }
+  
+    // 全体が元画像と一致しているかを判定
+    const pieces = Array.from(output.children);
+    let isComplete = true;
+  
+    pieces.forEach((piece, index) => {
+      const row = Math.floor(index / cols);
+      const col = index % cols;
+  
+      if (
+        piece.dataset.row != row || // 行が一致しているか
+        piece.dataset.col != col    // 列が一致しているか
+      ) {
+        isComplete = false;
+      }
+    });
+  
+    // 結果を表示
+    if (isComplete) {
+      resultMessage.textContent = "おめでとう！！！";
+      resultMessage.style.color = "green";
+    } else {
+      resultMessage.textContent = "faild...";
+      resultMessage.style.color = "red";
+    }
+  });
   </script>
 </body>
 </html>
