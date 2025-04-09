@@ -49,7 +49,7 @@
   <button id="processButton">画像を処理</button>
   <button id="showOriginalButton">元の画像を表示</button>
   <button id="reshuffleButton">混ぜ直す</button>  <!--数学的に解くことができないパズルになった時に自動で押されるようにする-->
-  <button id="reshuffleButton">このパズルは解くことができません。もう一回問題を出せよ</button>
+  <button id="warukutiButton">このパズルは解くことができません。もう一回問題を出せよ</button>
   <div id="output"></div>
   <div id="originalImage">
     <h2>元の画像</h2>
@@ -63,6 +63,7 @@
       </ul>
   </nav>
   <script>
+    // 分割･シャッフルして問題を出す
     document.querySelectorAll('#processButton,#reshuffleButton').forEach(button => {
       button.addEventListener('click', () => {
         const fileInput = document.getElementById('imageInput');
@@ -186,8 +187,18 @@
         reader.readAsDataURL(file);
       });
     });
-
+    
+    // 元の画像を表示
     document.getElementById('showOriginalButton').addEventListener('click', () => {
+      const originalImageContainer = document.getElementById('originalImage');
+      if (originalImageContainer.style.display === 'none') {
+        originalImageContainer.style.display = 'block';
+      } else {
+        originalImageContainer.style.display = 'none';
+      }
+    });
+    // 本当に解けないか判定して解けたら「ほんと？」解けないなら「ごめんなさい、もう一度問題を出します」（ロジック未実装）
+    document.getElementById('warukutiButton').addEventListener('click', () => {
       const originalImageContainer = document.getElementById('originalImage');
       if (originalImageContainer.style.display === 'none') {
         originalImageContainer.style.display = 'block';
