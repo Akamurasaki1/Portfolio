@@ -1,1 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自己紹介ページ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #333;
+      color: white;
+      padding: 10px 20px;
+    }
+    .hamburger {
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .menu {
+      display: none;
+      flex-direction: column;
+      background-color: #444;
+      position: absolute;
+      top: 50px;
+      left: 0;
+      width: 200px;
+      padding: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .menu a {
+      color: white;
+      text-decoration: none;
+      padding: 10px;
+      border-bottom: 1px solid #555;
+    }
+    .menu a:hover {
+      background-color: #555;
+    }
+    .content {
+      padding: 20px;
+    }
+    .profile {
+      text-align: center;
+    }
+    .profile img {
+      border-radius: 50%;
+      width: 150px;
+      height: 150px;
+    }
+    .works {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .work {
+      text-align: center;
+      width: 200px;
+    }
+    .work img {
+      width: 100%;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <h1>自己紹介</h1>
+  </header>
+  <div class="menu" id="menu">
+    <a href="#about">About</a>
+    <a href="#interests">興味の対象</a>
+    <a href="#languages">言語</a>
+    <a href="#works">作品</a>
+  </div>
+  <div class="content">
+    <section id="about" class="profile">
+      <h2>About</h2>
+      <img src="your-profile-image.jpg" alt="プロフィール画像">
+      <p>こんにちは！私は[名前]です。Web開発やAIに興味があります。</p>
+    </section>
+    <section id="interests">
+      <h2>興味の対象</h2>
+      <ul>
+        <li>Web開発</li>
+        <li>人工知能</li>
+        <li>データサイエンス</li>
+      </ul>
+    </section>
+    <section id="languages">
+      <h2>言語</h2>
+      <ul>
+        <li>HTML / CSS / JavaScript</li>
+        <li>Python</li>
+        <li>Java</li>
+      </ul>
+    </section>
+    <section id="works" class="works">
+      <h2>作品</h2>
+      <div class="work">
+        <a href="https://example.com/work1" target="_blank">
+          <img src="work1-image.jpg" alt="作品1">
+          <p>作品1</p>
+        </a>
+      </div>
+      <div class="work">
+        <a href="https://example.com/work2" target="_blank">
+          <img src="work2-image.jpg" alt="作品2">
+          <p>作品2</p>
+        </a>
+      </div>
+    </section>
+  </div>
 
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
+  </script>
+</body>
+</html>
