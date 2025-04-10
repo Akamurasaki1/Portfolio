@@ -18,6 +18,15 @@
       color: white;
       padding: 10px 20px;
     }
+    footer{
+        text-align: center;
+        padding: 15px;
+        background-color: #333;
+        color: white;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+    }
     .hamburger {
       font-size: 24px;
       cursor: pointer;
@@ -54,7 +63,7 @@
       height: 150px;
     }
     .works {
-      display: flex;
+      display: flex;      
       flex-wrap: wrap;
       gap: 20px;
       justify-content: center;
@@ -79,13 +88,17 @@
     <a href="#about">About</a>
     <a href="#interests">興味の対象</a>
     <a href="#languages">言語</a>
-    <a href="#works">作品</a>
+    <a href="#works">作品一覧</a>
   </div>
   <div class="content">
     <section id="about" class="profile">
       <h2>About</h2>
       <img src="your-profile-image.jpg" alt="プロフィール画像">
-      <p>こんにちは！私は[名前]です。Web開発やAIに興味があります。</p>
+      <p>こんにちは！私は<b>AKAMURASAKI</b>です。Web開発やAIに興味があります。</p>
+      <details>
+        <summary>詳細</summary>
+        <p>sdfjalkjfd;laflsdkjflkjaeso;jdofilaes;fkjd</p>
+      </details>
     </section>
     <section id="interests">
       <h2>興味の対象</h2>
@@ -96,27 +109,61 @@
       </ul>
     </section>
     <section id="languages">
-      <h2>言語</h2>
-      <ul>
-        <li>HTML / CSS / JavaScript</li>
-        <li>Python</li>
-        <li>Java</li>
-      </ul>
+        <h2>言語</h2>
+        <ul style="list-style: none; padding: 0; display: flex; gap: 20px; justify-content: center;">
+          <li style="text-align: center;">
+            <img src="html-icon.png" alt="HTML" style="width: 50px; height: 50px;">
+            <p>HTML</p>
+          </li>
+          <li style="text-align: center;">
+            <img src="css-icon.png" alt="CSS" style="width: 50px; height: 50px;">
+            <p>CSS</p>
+          </li>
+          <li style="text-align: center;">
+            <img src="javascript-icon.png" alt="JavaScript" style="width: 50px; height: 50px;">
+            <p>JavaScript</p>
+          </li>
+          <li style="text-align: center;">
+            <img src="python-icon.png" alt="Python" style="width: 50px; height: 50px;">
+            <p>Python</p>
+          </li>
+          <li style="text-align: center;">
+            <img src="java-icon.png" alt="Java" style="width: 50px; height: 50px;">
+            <p>Java</p>
+          </li>
+          <li><details>
+            <summary>学習初期段階の言語</summary>
+            <ul>
+              <li>Ruby</li>
+              <li>PHP</li>
+              <li>Swift</li>
+          </details></li>
+        </ul>
     </section>
+
     <section id="works" class="works">
-      <h2>作品</h2>
-      <div class="work">
-        <a href="https://example.com/work1" target="_blank">
-          <img src="work1-image.jpg" alt="作品1">
-          <p>作品1</p>
-        </a>
-      </div>
-      <div class="work">
-        <a href="https://example.com/work2" target="_blank">
-          <img src="work2-image.jpg" alt="作品2">
+        <h2>作品一覧</h2>
+        <div class="work">
+        <img src="work1-image.jpg" alt="作品1" usemap="#work1-map">
+        <map name="work1-map">
+            <area shape="rect" coords="0,0,200,200" href="https://example.com/work1" alt="作品1" target="_blank">
+        </map>
+        <p>作品1</p>
+        </div>
+        <div class="work">
+          <img src="work2-image.jpg" alt="作品2" usemap="#work2-map">
+          <map name="work2-map">
+            <area shape="rect" coords="0,0,200,200" href="https://example.com/work2" alt="作品2" target="_blank">
+          </map>
           <p>作品2</p>
-        </a>
-      </div>
+        </div>
+        <div class="work">
+            <img src="work3-image.jpg" alt="作品3" usemap="#work3-map">
+            <map name="work2-map">
+              <area shape="rect" coords="0,0,200,200" href="https://example.com/work3" alt="作品3" target="_blank">
+            </map>
+            <p>作品3</p>
+          </div>
     </section>
   </div>
 
@@ -126,5 +173,65 @@
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
   </script>
+  <footer>
+    <adress>
+        <a href="mailto:aka.akamu.akamurasaki0192@gmail.com">あかむらさきにメールを書く</a>
+    </adress>
+    <!-- フォームのあるモーダルダイアログ -->
+    <dialog id="favDialog">
+    <form>
+      <p>
+        <label>
+          フィードバックを選択してください:
+          <select>
+            <option value="default">選択してください…</option>
+            <option>良い</option>
+            <option>よくない</option>
+            <option>その他</option>
+          </select>
+        </label>
+      </p>
+      <p>
+        <label for="otherFeedback">その他のフィードバック:</label>
+        <input type="text" id="otherFeedback" placeholder="入力してください…">
+      </p>
+      <div>
+        <button value="cancel" formmethod="dialog">キャンセル</button>
+        <button id="confirmBtn" value="default">確認</button>
+      </div>
+    </form>
+    </dialog>
+    <p>
+        <button id="showDialog">フィードバックを送信</button>
+    </p>
+    <output></output>
+    <script>
+    const showButton = document.getElementById("showDialog");
+    const favDialog = document.getElementById("favDialog");
+    const outputBox = document.querySelector("output");
+    const selectEl = favDialog.querySelector("select");
+    const otherFeedbackEl = document.getElementById("otherFeedback");
+    const confirmBtn = favDialog.querySelector("#confirmBtn");
+    
+    // "Show the dialog" ボタンで <dialog> をモーダルに開く
+    showButton.addEventListener("click", () => {
+      favDialog.showModal();
+    });
+    
+    // ダイアログの "close" イベントで結果を表示
+    favDialog.addEventListener("close", () => {
+        const feedback = selectEl.value !== "default" ? selectEl.value : "";
+        const otherFeedback = otherFeedbackEl.value.trim();
+        outputBox.value = feedback || otherFeedback
+        ? `あなたのフィードバック: [${feedback}] ${otherFeedback}`
+        : "フィードバックが入力されていません。";
+    });
+    // ［確認］ボタンが既定でフォームを送信しないようにし、`close()` メソッドでダイアログを閉じ、"close" イベントを発生させる
+    confirmBtn.addEventListener("click", (event) => {
+      event.preventDefault(); // この偽フォームを送信しない
+      favDialog.close(selectEl.value); // ここで選択ボックスの値を送る必要がある
+    });
+    </script>
+  </footer>
 </body>
 </html>
