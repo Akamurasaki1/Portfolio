@@ -55,6 +55,50 @@
       ctx.lineWidth = 2;
       ctx.stroke();
     }
+    
+   // 軸を描画する関数
+    function drawAxes() {
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 1;
+  
+      // X軸（時間軸）
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height / 2);
+      ctx.lineTo(canvas.width, canvas.height / 2);
+      ctx.stroke();
+  
+      // Y軸（振幅軸）
+      ctx.beginPath();
+      ctx.moveTo(canvas.width / 2, 0);
+      ctx.lineTo(canvas.width / 2, canvas.height);
+      ctx.stroke();
+  
+      // X軸の目盛りとラベル
+      const timeSteps = 10; // 時間軸の目盛りの数
+      for (let i = 0; i <= timeSteps; i++) {
+        const x = (i / timeSteps) * canvas.width;
+        ctx.beginPath();
+        ctx.moveTo(x, canvas.height / 2 - 5);
+        ctx.lineTo(x, canvas.height / 2 + 5);
+        ctx.stroke();
+  
+        const timeLabel = (i / timeSteps).toFixed(1); // 時間ラベル
+        ctx.fillText(timeLabel, x - 10, canvas.height / 2 + 20);
+      }
+  
+      // Y軸の目盛りとラベル
+      const amplitudeSteps = 4; // 振幅軸の目盛りの数
+      for (let i = -amplitudeSteps; i <= amplitudeSteps; i++) {
+        const y = canvas.height / 2 - (i / amplitudeSteps) * (canvas.height / 2);
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2 - 5, y);
+        ctx.lineTo(canvas.width / 2 + 5, y);
+        ctx.stroke();
+  
+        const amplitudeLabel = i / amplitudeSteps; // 振幅ラベル
+        ctx.fillText(amplitudeLabel.toFixed(1), canvas.width / 2 + 10, y + 5);
+      }
+    }
 
     // マウス操作で波形を編集
     canvas.addEventListener('mousedown', (e) => {
