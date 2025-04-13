@@ -1,1 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>スライドポップ表示（CSSのみ）</title>
+  <style>
+    body {
+      background: #f5f5f5;
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 100px;
+    }
 
+    .message {
+      opacity: 0;
+      transform: translateY(30px);
+      font-size: 24px;
+      margin: 20px;
+      animation: slideUp 0.6s ease forwards;
+    }
+
+    /* 遅延で順番に表示 */
+    .message:nth-child(1) {
+      animation-delay: 0.3s;
+    }
+    .message:nth-child(2) {
+      animation-delay: 0.9s;
+    }
+    .message:nth-child(3) {
+      animation-delay: 1.5s;
+    }
+
+    /* アニメーション定義 */
+    @keyframes slideUp {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="message">ようこそ、私たちのサイトへ！</div>
+  <div class="message">ここでは新しい体験が待っています。</div>
+  <div class="message">さあ、冒険を始めましょう！</div>
+
+</body>
+</html>
