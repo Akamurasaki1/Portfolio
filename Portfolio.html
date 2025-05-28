@@ -202,7 +202,23 @@
   <script>
     function toggleMenu() {
       const menu = document.getElementById('menu');
-      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+      // メニューの表示/非表示を切り替える
+      if (menu.style.display === 'none' || menu.style.display === '') {
+      menu.style.display = 'flex';
+      document.addEventListener('click', closeMenuOnClickOutside);
+      } else {
+      menu.style.display = 'none';
+      document.removeEventListener('click', closeMenuOnClickOutside);
+      }
+    }
+
+    function closeMenuOnClickOutside(event) {
+      const menu = document.getElementById('menu');
+      const hamburger = document.querySelector('.hamburger');
+      if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
+      menu.style.display = 'none';
+      document.removeEventListener('click', closeMenuOnClickOutside);
+      }
     }
   </script>
   <footer>
