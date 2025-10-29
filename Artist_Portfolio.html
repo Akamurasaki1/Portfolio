@@ -1,1 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>アーティストページ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin-bottom: 100px;
+      margin-top: auto;
+      padding: 0;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content:start center;
+      background-color: #07000a;
+      opacity:0.95;
+      color: white;
+      padding: 10px 20px;
+      position:fixed;
+      width: 100%;
+    }
+    footer{
+        text-align: center;
+        padding: 15px;
+        background-color: #07000a;
+        opacity:0.95;
+        color: white;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+    }
+    .hamburger {
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .menu {
+      display: none;
+      flex-direction: column;
+      background-color: #444;
+      position: absolute;
+      top: 50px;
+      left: 0;
+      width: 200px;
+      padding: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .menu a {
+      color: white;
+      text-decoration: none;
+      padding: 10px;
+      border-bottom: 1px solid #555;
+    }
+    .menu a:hover {
+      background-color: #555;
+    }
+    .thinking{
+      padding:20px;
+    }
+    .content {
+      padding: 20px;
+    }
+    .profile {
+      text-align: center;
+    }
+    .profile img {
+      border-radius: 50%;
+      width: 150px;
+      height: 150px;
+    }
 
+    .work {
+      text-align: center;
+      width: 200px;
+    }
+    .work img {
+      width: 100%;
+      display: grid; 
+      grid-template-columns: repeat(3,1fr);     
+      margin-top: 20px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+    <header>
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
+        <h1>自己紹介</h1>
+        <div class="menu" id="menu">
+          <a href="#about">About</a>
+          <a href="#thinking">My way of thinking</a>
+          <a href="#interests">興味の対象</a>
+          <a href="#languages">言語</a>
+          <a href="#works">作品一覧</a>
+          <a href="index.html">ゲームに戻る</a>
+      </div>
+    </header>
+    <div class="content">
+        <section id="about" class="profile">
+        <h2>About</h2>
+        <img src="your-profile-image.jpg" alt="プロフィール画像">
+        <p>こんにちは！私は<b>AKAMURASAKI</b>です。Web開発やAIに興味があります。</p>
+        <details>
+            <summary>詳細</summary>
+            <p>sdfjalkjfd;laflsdkjflkjaeso;jdofilaes;fkjd</p>
+        </details>
+        <section id="thinking" class="thinking">
+          <h2>考え方/展望/考察等</h2>
+          <details>
+            <summary>何のためにコードがあるか</summary>
+            <p>私は、コードは人間が機械で起きている挙動を理解するためにあると考えています。</p>
+            <p></p>
+          </details>
+          <details>
+            <summary>将来の想像</summary>
+            <p></p>
+          </details>
+          <details>
+            <summary>AIとの関わり</summary>
+            <p></p>
+          </details>
+          <details>
+            <summary>数学とプログラミング</summary>
+            <p>
+              私は数学科に在籍していますが、数学とプログラミングでは学んだり行動したりするときの脳の使い方が全く違うと感じています。<br>
+              プログラミングは日常の五感などを文字列に直していきますが、数学はむしろ数式を想像可能なものに置き換えてみる作業が多いと感じているためです。<br>
+              これは自分の行動にも表れていると思っていて、例えば数学は紙と鉛筆を使って自分の五感が作成物の近くに触れた方が頭が回りますが、プログラミングは紙にロジックを書き出そうとするよりたとえ純正のメモ帳であってもPCのキーボードを経由して自分の感覚と少し離れた土台で作業した方が(頭でゴールを想像しながら書き換えていく)うまくできるように感じます。<br>
+              しかし、
+            </p>
+          </details>
+        </section>
+        </section>
+        <section id="interests">
+        <h2>興味の対象</h2>
+        <ul>
+            <li>Web開発</li>
+            <li>人工知能</li>
+            <li>データサイエンス</li>
+        </ul>
+        </section>
+            <section id="languages">
+            <h2>言語/ツール</h2>
+            <ul style="list-style: none; padding: 0; display: flex; gap: 20px; justify-content: center;">
+            <li style="text-align: center;">
+                <img src="html-icon.png" alt="HTML" style="width: 50px; height: 50px;">
+                <p>HTML</p>
+            </li>
+            <li style="text-align: center;">
+                <img src="css-icon.png" alt="CSS" style="width: 50px; height: 50px;">
+                <p>CSS</p>
+            </li>
+            <li style="text-align: center;">
+                <img src="javascript-icon.png" alt="JavaScript" style="width: 50px; height: 50px;">
+                <p>JavaScript</p>
+            </li>
+            <li style="text-align: center;">
+                <img src="python-icon.png" alt="Python" style="width: 50px; height: 50px;">
+                <p>Python</p>
+            </li>
+            <li style="text-align: center;">
+                <img src="git-icon.png" alt="git" style="width: 50px; height: 50px;">
+                <p>Git/GitHub</p>
+            </li>
+            <li>
+                <details>
+                <summary>学習初期段階の言語</summary>
+                <ul>
+                <li>Ruby</li>
+                <li>PHP</li>
+                <li>Go</li>
+                </details>
+            </li>
+            </ul>
+        </section>
+
+        <section id="works" class="works">
+            <h2>作品一覧</h2>
+            <ur>
+                <div class="work">
+                <img src="work1-image.jpg" alt="作品1" usemap="#work1-map">
+                <map name="work1-map">
+                    <area shape="rect" coords="0,0,200,200" href="https://example.com/work1" alt="作品1" target="_blank">
+                </map>
+                <p>作品1</p>
+                <img src="work2-image.jpg" alt="作品2" usemap="#work2-map">
+                <map name="work2-map">
+                    <area shape="rect" coords="0,0,200,200" href="https://example.com/work2" alt="作品2" target="_blank">
+                </map>
+                <p>作品2</p>
+                    <img src="work3-image.jpg" alt="作品3" usemap="#work3-map">
+                    <map name="work2-map">
+                    <area shape="rect" coords="0,0,200,200" href="https://example.com/work3" alt="作品3" target="_blank">
+                    </map>
+                    <p>作品3</p>
+                </div>
+            </ur>
+        </section>
+    </div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      // メニューの表示/非表示を切り替える
+      if (menu.style.display === 'none' || menu.style.display === '') {
+      menu.style.display = 'flex';
+      document.addEventListener('click', closeMenuOnClickOutside);
+      } else {
+      menu.style.display = 'none';
+      document.removeEventListener('click', closeMenuOnClickOutside);
+      }
+    }
+
+    function closeMenuOnClickOutside(event) {
+      const menu = document.getElementById('menu');
+      const hamburger = document.querySelector('.hamburger');
+      if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
+      menu.style.display = 'none';
+      document.removeEventListener('click', closeMenuOnClickOutside);
+      }
+    }
+  </script>
+  <footer>
+    <adress>
+        <a href="mailto:aka.akamu.akamurasaki0192@gmail.com">あかむらさきにメールを書く</a>
+    </adress>
+    <!-- フォームのあるモーダルダイアログ -->
+    <dialog id="favDialog">
+    <form>
+      <p>
+        <label>
+          フィードバックを選択してください:
+          <select>
+            <option value="default">選択してください…</option>
+            <option>良い</option>
+            <option>よくない</option>
+            <option>その他</option>
+          </select>
+        </label>
+      </p>
+      <p>
+        <label for="otherFeedback">その他のフィードバック:</label>
+        <input type="text" id="otherFeedback" placeholder="入力してください…">
+      </p>
+      <div>
+        <button value="cancel" formmethod="dialog">キャンセル</button>
+        <button id="confirmBtn" value="default">確認</button>
+      </div>
+    </form>
+    </dialog>
+    <p>
+        <button id="showDialog">フィードバックを送信</button>
+    </p>
+    <output></output>
+    <script>
+    const showButton = document.getElementById("showDialog");
+    const favDialog = document.getElementById("favDialog");
+    const outputBox = document.querySelector("output");
+    const selectEl = favDialog.querySelector("select");
+    const otherFeedbackEl = document.getElementById("otherFeedback");
+    const confirmBtn = favDialog.querySelector("#confirmBtn");
+    
+    // "Show the dialog" ボタンで <dialog> をモーダルに開く
+    showButton.addEventListener("click", () => {
+      favDialog.showModal();
+    });
+    
+    // ダイアログの "close" イベントで結果を表示
+    favDialog.addEventListener("close", () => {
+        const feedback = selectEl.value !== "default" ? selectEl.value : "";
+        const otherFeedback = otherFeedbackEl.value.trim();
+        outputBox.value = feedback || otherFeedback
+        ? `あなたのフィードバック: [${feedback}] ${otherFeedback}`
+        : "フィードバックが入力されていません。";
+    });
+    // ［確認］ボタンが既定でフォームを送信しないようにし、`close()` メソッドでダイアログを閉じ、"close" イベントを発生させる
+    confirmBtn.addEventListener("click", (event) => {
+      event.preventDefault(); // この偽フォームを送信しない
+      favDialog.close(selectEl.value); // ここで選択ボックスの値を送る必要がある
+    });
+    </script>
+  </footer>
+</body>
+</html>
