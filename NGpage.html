@@ -97,7 +97,7 @@
       // 入力が長すぎた場合はリセット
       if (currentCount > 100000) {
         typedText = '';
-        inputCount.textContent = '入力文字数: 0';
+        inputCount.textContent = '入力文字数: 1';
       
       }
     }
@@ -132,7 +132,7 @@
           window.location.href = 'index.html'; // 正しい順序で選択されたらリンク
         } else if (!'hlpe'.startsWith(selectedSequence)) {
           selectedSequence = ''; // 順序が間違っていたらリセット
-          InputCount.textContent = '入力文字数: 0';
+          InputCount.textContent = '入力文字数: 1';
           
         }
       });
