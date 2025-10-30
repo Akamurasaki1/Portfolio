@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XXXXXXXXXXXX</title>
+  <style>
+  body {
+    background-color: red; /* 背景を黒に設定 */
+    color: black; /* テキストを赤に設定 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 画面全体をカバー */
+    margin: 0; /* 余白をなくす */
+    font-size: 2rem; /* テキストサイズを大きく */
+    font-family: Arial, sans-serif; /* フォントを設定 */
+  }
+  #inputTrackerContainer {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  #inputCount {
+    font-size: 1.2rem;
+    color: White;
+    margin-bottom: 10px;
+  }
+
+  #clickableText {
+    font-size: 2rem;
+    color: red;
+    cursor: pointer;
+  }
+
+  #clickableText.active {
+    color: white; /* クリック後に青く変わる */
+  }
+</style>
+</head>
+<body>
+  <div id="inputTrackerContainer">
+  <p id="inputCount">入力文字数: 0</p>
+  <div id="clickableText">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx</div>
+</div>
+<script>
+  const clickableText = document.getElementById('clickableText');
+  const inputCount = document.getElementById('inputCount');
+  const InputCount = document.getElementById('InputCount');
+  let isTracking = false; // 入力監視の状態を管理
+  let typedText = ''; // 入力された文字を記録
+  const helpText = 'help'; // リンクするトリガー文字列
+  const ngText = 'who are you';
+  let tapCount = 0;
+  let randomTextContainer;
+  let selectedSequence = '';
+
+  // クリックイベントの設定
+  clickableText.addEventListener('click', () => {
+    if (!isTracking) {
+      clickableText.classList.add('active'); // 文字色を青に変更
+      isTracking = true; // 入力監視を開始
+      inputCount.textContent = '入力文字数: 0'; // 初期化
+      typedText = ''; // 入力履歴をリセット
+    }
+
+    tapCount++;
+    if (tapCount === 10){
+      displayRandomText();
+   }
+  });
+
+  // キーボード入力を監視
+  document.addEventListener('keydown',(event) => {
+    if (isTracking) {
+      const currentCount = parseInt(inputCount.textContent.replace('入力文字数: ', ''), 10);
+      inputCount.textContent = `入力文字数: ${currentCount + 1}`;
+      typedText += event.key; // 入力されたキーを記録
+
+      // 「help」と一致したらリンク
+      if (typedText.includes(helpText)) {
+        window.location.href = 'index.html';
+      }
+
+      if (typedText.includes(ngText)){
+        window.located.href = 'NGpage.html';
+      }
+
+      // 入力が長すぎた場合はリセット
+      if (currentCount > 12) {
+        typedText = '';
+        inputCount.textContent = '入力文字数: 0';
+      
+      }
+    }
+  });
+
+  // ランダムな文字列を表示する関数
+  function displayRandomText() {
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    const shuffled = alphabet.split('').sort(() => Math.random() - 0.5); // ランダムに並び替え
+    randomTextContainer = document.createElement('div');
+    randomTextContainer.id = 'randomTextContainer';
+    randomTextContainer.style.marginTop = '20px';
+    randomTextContainer.style.textAlign = 'center';
+
+    shuffled.forEach((char) => {
+      const charElement = document.createElement('span');
+      charElement.textContent = char;
+      charElement.style.margin = '5px';
+      charElement.style.fontSize = '2rem';
+      charElement.style.color = 'white';
+      charElement.style.cursor = 'pointer';
+
+      // 文字をクリックしたときの処理
+      charElement.addEventListener('click', () => {
+        const CurrentCount = parseInt(InputCount.textContent.replace('入力文字数: ', ''), 10);
+        InputCount.textContent = `入力文字数: ${CurrentCount + 1}`;
+        selectedSequence += char; // 選択された文字を記録
+        updateInputCount();
+        console.log(`選択された文字列:${selectedSequence}`);
+        
+        if (selectedSequence === 'help') {
+          window.location.href = 'index.html'; // 正しい順序で選択されたらリンク
+        } else if (!'hlpe'.startsWith(selectedSequence)) {
+          selectedSequence = ''; // 順序が間違っていたらリセット
+          InputCount.textContent = '入力文字数: 0';
+          
+        }
+      });
+
+      randomTextContainer.appendChild(charElement);
+    });
+    const inputTrackerContainer = document.getElementById('inputTrackerContainer');
+    inputTrackerContainer.appendChild(randomTextContainer);
+  }
+</script>
+  <li><a href="about.html">救い</a></li>
+</body>
+</html>
