@@ -16,6 +16,7 @@
     font-size: 2rem; /* テキストサイズを大きく */
     font-family: Arial, sans-serif; /* フォントを設定 */
   }
+
   #inputTrackerContainer {
     text-align: center;
     margin-top: 20px;
@@ -32,7 +33,14 @@
     color: red;
     cursor: pointer;
   }
-
+/* --- 応用3：文字色を点滅 --- */
+@keyframes color-blink {
+  0%, 100% { color: #333; }
+  50% { color: #e91e63; }
+}
+.color-blink {
+  animation: color-blink 1s infinite;
+}
   #clickableText.active {
     color: white; /* クリック後に青く変わる */
   }
@@ -40,7 +48,7 @@
 </head>
 <body>
   <div id="inputTrackerContainer">
-  <p id="inputCount">入力文字数: 0</p>
+  <p id="inputCount" class="color-blink">入力文字数: 0</p>
   <div id="clickableText">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
 </div>
 <script>
