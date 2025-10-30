@@ -7,7 +7,7 @@
   <style>
   body {
     background-color: red; /* 背景を黒に設定 */
-    color: black; /* テキストを赤に設定 */
+    color: red; /* テキストを赤に設定 */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -41,7 +41,7 @@
 <body>
   <div id="inputTrackerContainer">
   <p id="inputCount">入力文字数: 0</p>
-  <div id="clickableText">X◼️◻️</div>
+  <div id="clickableText">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
 </div>
 <script>
   const clickableText = document.getElementById('clickableText');
@@ -60,7 +60,7 @@
     if (!isTracking) {
       clickableText.classList.add('active'); // 文字色を青に変更
       isTracking = true; // 入力監視を開始
-      inputCount.textContent = '入力文字数: 0'; // 初期化
+      inputCount.textContent = '入力文字数: 1'; // 初期化
       typedText = ''; // 入力履歴をリセット
     }
 
@@ -74,7 +74,7 @@
   document.addEventListener('keydown',(event) => {
     if (isTracking) {
       const currentCount = parseInt(inputCount.textContent.replace('入力文字数: ', ''), 10);
-      inputCount.textContent = `入力文字数: ${currentCount + 1}`;
+      inputCount.textContent = `入力文字数: ${currentCount * 2}`;
       typedText += event.key; // 入力されたキーを記録
 
       // 「help」と一致したらリンク
@@ -87,7 +87,7 @@
       }
 
       // 入力が長すぎた場合はリセット
-      if (currentCount > 12) {
+      if (currentCount > 1050) {
         typedText = '';
         inputCount.textContent = '入力文字数: 0';
       
