@@ -73,7 +73,7 @@
   // キーボード入力を監視
   document.addEventListener('keydown',(event) => {
     if (isTracking) {
-      const currentCount = parseInt(inputCount.textContent.replace('入力文字数: ', ''), 10);
+      const currentCount = parseInt(inputCount.textContent.replace('入力文字数: ', ''), 20);
       inputCount.textContent = `入力文字数: ${currentCount + 1}`;
       typedText += event.key; // 入力されたキーを記録
 
