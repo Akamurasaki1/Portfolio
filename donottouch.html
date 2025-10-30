@@ -50,6 +50,7 @@
   let isTracking = false; // 入力監視の状態を管理
   let typedText = ''; // 入力された文字を記録
   const helpText = 'help'; // リンクするトリガー文字列
+  const ngText = 'who are you';
   let tapCount = 0;
   let randomTextContainer;
   let selectedSequence = '';
@@ -81,8 +82,12 @@
         window.location.href = 'index.html';
       }
 
+      if (typedText.includes(ngText)){
+        window.located.href = 'NGpage.html';
+      }
+
       // 入力が長すぎた場合はリセット
-      if (currentCount > 5) {
+      if (currentCount > 12) {
         typedText = '';
         inputCount.textContent = '入力文字数: 0';
       
