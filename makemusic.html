@@ -33,24 +33,57 @@ const ctx = canvas.getContext("2d");
 let drawing = false;
 let points = [];
 
-// 描画
-canvas.addEventListener("pointerdown", e => {
-  drawing = true;
-  ctx.beginPath();
-  ctx.moveTo(e.offsetX, e.offsetY);
-  points = [];
-});
-canvas.addEventListener("pointermove", e => {
-  if (!drawing) return;
-  ctx.lineTo(e.offsetX, e.offsetY);
-  ctx.strokeStyle = "blue";
-  ctx.lineWidth = 2;
-  ctx.stroke();
-  points.push(e.offsetY);
-});
-canvas.addEventListener("pointerup", () => drawing = false);
-canvas.addEventListener("pointerleave", () => drawing = false);
+<!-- 波形を描画するキャンバス -->
+  <canvas id="waveformCanvas" width="600" height="200"></canvas>
+  <br>
+  <button id="submitWaveformButton">波形を送信</button>
+  <div id="waveformResult"></div>
 
+  <script>
+    const canvas = document.getElementById('waveformCanvas');
+    const ctx = canvas.getContext('2d');
+    const waveformResult = document.getElementById('waveformResult');
+    const submitWaveformButton = document.getElementById('submitWaveformButton');
+
+    let waveform = Array(100).fill(0); // 初期波形データ (100点の平坦な波形)
+    let isDrawing = false;
+
+    // 波形を描画する関数
+    function drawWaveform() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height / 2);
+
+      waveform.forEach((value, index) => {
+        const x = (index / (waveform.length - 1)) * canvas.width;
+        const y = canvas.height / 2 - value * (canvas.height / 2);
+        ctx.lineTo(x, y);
+      });
+
+      ctx.strokeStyle = 'blue';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    // マウス操作で波形を編集
+    canvas.addEventListener('mousedown', (e) => {
+      isDrawing = true;
+      updateWaveform(e);
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (isDrawing) {
+        updateWaveform(e);
+      }
+    });
+
+    canvas.addEventListener('mouseup', () => {
+      isDrawing = false;
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+      isDrawing = false;
+    });
 // y→音波変換
 function normalize(arr) {
   const h = canvas.height;
