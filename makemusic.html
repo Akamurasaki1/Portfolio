@@ -2,15 +2,17 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>波形ジェネレーター</title>
+  <title>波形エディタ＋ジェネレーター</title>
   <style>
     body { font-family: sans-serif; text-align: center; }
-    canvas { border: 1px solid #333; margin-top: 10px; }
+    canvas { border: 1px solid #333; margin-top: 10px; cursor: crosshair; }
     button { margin: 5px; padding: 8px 12px; }
   </style>
 </head>
 <body>
-  <h2>波形ジェネレーター</h2>
+  <h2>波形エディタ & ジェネレーター</h2>
+
+  <!-- 波形生成ボタン群 -->
   <div>
     <button onclick="generateSine()">サイン波</button>
     <button onclick="generateSquare()">矩形波</button>
@@ -18,7 +20,10 @@
     <button onclick="generateNoise()">ノイズ</button>
     <button onclick="clearWaveform()">クリア</button>
   </div>
+
+  <!-- キャンバス -->
   <canvas id="waveformCanvas" width="1200" height="300"></canvas>
+
   <br>
   <button id="downloadBtn">波形データを保存</button>
 
@@ -26,6 +31,7 @@
     const canvas = document.getElementById('waveformCanvas');
     const ctx = canvas.getContext('2d');
     let waveform = Array(1000).fill(0); // 長めの波形（1000点）
+    let isDrawing = false;
 
     function drawWaveform() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -41,8 +47,27 @@
       ctx.stroke();
     }
 
+    // --- マウスで編集 ---
+    canvas.addEventListener('mousedown', (e) => { isDrawing = true; updateWaveform(e); });
+    canvas.addEventListener('mousemove', (e) => { if (isDrawing) updateWaveform(e); });
+    canvas.addEventListener('mouseup', () => { isDrawing = false; });
+    canvas.addEventListener('mouseleave', () => { isDrawing = false; });
+
+    function updateWaveform(e) {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const index = Math.floor((x / canvas.width) * waveform.length);
+      const value = (canvas.height / 2 - y) / (canvas.height / 2);
+      if (index >= 0 && index < waveform.length) {
+        waveform[index] = value;
+        drawWaveform();
+      }
+    }
+
+    // --- 各種波形生成 ---
     function generateSine() {
-      const cycles = 5; // 波の数
+      const cycles = 5;
       waveform = waveform.map((_, i) => Math.sin((i / waveform.length) * cycles * 2 * Math.PI));
       drawWaveform();
     }
@@ -72,7 +97,7 @@
       drawWaveform();
     }
 
-    // 波形データをJSONとして保存
+    // --- 保存（JSON形式） ---
     document.getElementById('downloadBtn').addEventListener('click', () => {
       const blob = new Blob([JSON.stringify(waveform)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
