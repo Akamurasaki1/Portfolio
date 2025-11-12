@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>波形作曲アプリ</title>
+<style>
+  body { text-align: center; font-family: sans-serif; background: #fafafa; }
+  canvas {
+    border: 2px solid #007bff;
+    touch-action: none;
+    margin-top: 20px;
+    background: white;
+  }
+  button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+</style>
+</head>
+<body>
+<h2>波形作曲アプリ</h2>
+<p>Apple Pencilや指で波形を描いてください。</p>
+<canvas id="waveCanvas" width="800" height="200"></canvas><br>
+<button id="playBtn">▶️ 再生</button>
+<button id="clearBtn">🧹 消去</button>
+<button id="saveBtn">💾 WAV保存</button>
+
+<script>
+const canvas = document.getElementById("waveCanvas");
+const ctx = canvas.getContext("2d");
+let drawing = false;
+let points = [];
+
+// 描画
+canvas.addEventListener("pointerdown", e => {
+  drawing = true;
+  ctx.beginPath();
+  ctx.moveTo(e.offsetX, e.offsetY);
+  points = [];
+});
+canvas.addEventListener("pointermove", e => {
+  if (!drawing) return;
+  ctx.lineTo(e.offsetX, e.offsetY);
+  ctx.strokeStyle = "blue";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  points.push(e.offsetY);
+});
+canvas.addEventListener("pointerup", () => drawing = false);
+canvas.addEventListener("pointerleave", () => drawing = false);
+
+// y→音波変換
+function normalize(arr) {
+  const h = canvas.height;
+  return arr.map(v => 1 - (v / h) * 2); // -1〜+1
+}
+
+// 再生
+document.getElementById("playBtn").onclick = () => {
+  if (points.length < 2) return alert("波形を描いてください。");
+  const audioCtx = new AudioContext();
+  const arr = normalize(points);
+  const buffer = audioCtx.createBuffer(1, arr.length, 44100);
+  buffer.copyToChannel(Float32Array.from(arr), 0);
+  const source = audioCtx.createBufferSource();
+  source.buffer = buffer;
+  source.connect(audioCtx.destination);
+  source.start();
+};
+
+// 消去
+document.getElementById("clearBtn").onclick = () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  points = [];
+};
+
+// WAV保存
+document.getElementById("saveBtn").onclick = async () => {
+  if (points.length < 2) return alert("波形を描いてください。");
+
+  const arr = normalize(points);
+  const audioCtx = new OfflineAudioContext(1, arr.length, 44100);
+  const buffer = audioCtx.createBuffer(1, arr.length, 44100);
+  buffer.copyToChannel(Float32Array.from(arr), 0);
+  const source = audioCtx.createBufferSource();
+  source.buffer = buffer;
+  source.connect(audioCtx.destination);
+  source.start();
+
+  const rendered = await audioCtx.startRendering();
+  const wav = bufferToWav(rendered);
+  const blob = new Blob([wav], { type: "audio/wav" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "waveform.wav";
+  a.click();
+};
+
+// WAV変換関数
+function bufferToWav(buffer) {
+  const numOfChan = buffer.numberOfChannels;
+  const length = buffer.length * numOfChan * 2 + 44;
+  const bufferView = new ArrayBuffer(length);
+  const view = new DataView(bufferView);
+  const channels = [];
+  let offset = 0;
+  let pos = 0;
+
+  // RIFFヘッダ
+  function setUint16(data) { view.setUint16(pos, data, true); pos += 2; }
+  function setUint32(data) { view.setUint32(pos, data, true); pos += 4; }
+
+  setUint32(0x46464952); // "RIFF"
+  setUint32(length - 8);
+  setUint32(0x45564157); // "WAVE"
+
+  setUint32(0x20746d66); // "fmt "
+  setUint32(16);
+  setUint16(1);
+  setUint16(numOfChan);
+  setUint32(buffer.sampleRate);
+  setUint32(buffer.sampleRate * 2 * numOfChan);
+  setUint16(numOfChan * 2);
+  setUint16(16);
+
+  setUint32(0x61746164); // "data"
+  setUint32(length - pos - 4);
+
+  for (let i = 0; i < numOfChan; i++)
+    channels.push(buffer.getChannelData(i));
+
+  while (pos < length) {
+    for (let i = 0; i < numOfChan; i++) {
+      const sample = Math.max(-1, Math.min(1, channels[i][offset]));
+      view.setInt16(pos, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+      pos += 2;
+    }
+    offset++;
+  }
+
+  return bufferView;
+}
+</script>
+</body>
+</html>
